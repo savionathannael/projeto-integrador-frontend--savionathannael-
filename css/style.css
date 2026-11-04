@@ -1,0 +1,397 @@
+/* =========================================================
+   LOJA 3D PRINT - style.css
+   Índice:
+   1. Variáveis
+   2. Reset e base
+   3. Cabeçalho, conteúdo e rodapé
+   4. Vídeo
+   5. Categorias (cards interativos)
+   6. Produtos (tabela e imagem)
+   7. Formulário de orçamento
+   8. Responsivo e acessibilidade
+   ========================================================= */
+
+/* 1. VARIÁVEIS ------------------------------------------- */
+:root {
+  --red-600: #d4202c;
+  --red-700: #b01822;
+  --red-50: #fdecee;
+  --ink: #1d1d22;
+  --muted: #63636d;
+  --line: #e8e8ec;
+  --white: #ffffff;
+
+  --font-title: "Sora", "Segoe UI", sans-serif;
+  --font-body: "DM Sans", "Segoe UI", sans-serif;
+
+  --radius-sm: 8px;
+  --radius-lg: 16px;
+
+  /* margem lateral que centraliza o conteúdo em até 960px */
+  --side: max(1rem, calc((100% - 960px) / 2));
+}
+
+/* 2. RESET E BASE ---------------------------------------- */
+*,
+*::before,
+*::after {
+  box-sizing: border-box;
+  margin: 0;
+  padding: 0;
+}
+
+body {
+  font-family: var(--font-body);
+  color: var(--ink);
+  background: var(--white);
+  line-height: 1.6;
+}
+
+h1, h2 {
+  font-family: var(--font-title);
+  line-height: 1.2;
+}
+
+img,
+video {
+  display: block;
+  max-width: 100%;
+  height: auto;
+}
+
+/* garante que o atributo hidden sempre esconda o elemento */
+[hidden] {
+  display: none !important;
+}
+
+:focus-visible {
+  outline: 3px solid var(--red-600);
+  outline-offset: 2px;
+}
+
+@media (prefers-reduced-motion: no-preference) {
+  html {
+    scroll-behavior: smooth;
+  }
+}
+
+/* 3. CABEÇALHO, CONTEÚDO E RODAPÉ ------------------------ */
+header {
+  background: var(--red-600);
+  color: var(--white);
+  padding: 3rem var(--side);
+}
+
+header h1 {
+  font-size: clamp(2rem, 5vw, 3.25rem);
+  margin-bottom: 0.5rem;
+}
+
+header p {
+  max-width: 55ch;
+}
+
+main {
+  padding: 0 var(--side);
+}
+
+main section {
+  padding-block: 2.5rem;
+  border-bottom: 1px solid var(--line);
+}
+
+main section:last-child {
+  border-bottom: 0;
+}
+
+main h2 {
+  font-size: 1.6rem;
+  margin-bottom: 1.25rem;
+}
+
+footer {
+  border-top: 1px solid var(--line);
+  padding: 1.5rem var(--side);
+  color: var(--muted);
+  font-size: 0.9rem;
+}
+
+/* 4. VÍDEO ---------------------------------------------- */
+#demonstracao video {
+  width: 100%;
+  max-width: 640px;
+  border-radius: var(--radius-lg);
+  background: var(--ink);
+}
+
+/* 5. CATEGORIAS (CARDS INTERATIVOS) --------------------- */
+#categorias ul {
+  display: grid;
+  grid-template-columns: repeat(auto-fill, minmax(240px, 1fr));
+  gap: 1rem;
+  list-style: none;
+}
+
+#categorias li {
+  position: relative;
+  padding: 1.25rem;
+  border: 1px solid var(--line);
+  border-left: 4px solid var(--red-600);
+  border-radius: var(--radius-sm);
+  font-weight: 500;
+  transition: background 0.15s, color 0.15s, border-color 0.15s,
+    box-shadow 0.15s;
+}
+
+#categorias li:has(.categoria-btn):hover {
+  border-color: var(--red-600);
+  box-shadow: 0 8px 20px rgba(212, 32, 44, 0.14);
+}
+
+/* Categoria selecionada: card todo vermelho */
+#categorias li:has(.categoria-btn[aria-pressed="true"]) {
+  background: var(--red-600);
+  border-color: var(--red-700);
+  color: var(--white);
+}
+
+/* O botão parece texto, e o ::after estica a área clicável pelo card todo */
+.categoria-btn {
+  display: block;
+  width: 100%;
+  margin: 0;
+  padding: 0;
+  border: 0;
+  border-radius: 0;
+  background: none;
+  color: inherit;
+  font: inherit;
+  text-align: left;
+  cursor: pointer;
+}
+
+.categoria-btn:hover {
+  background: none;
+}
+
+.categoria-btn::after {
+  content: "";
+  position: absolute;
+  inset: 0;
+  border-radius: var(--radius-sm);
+}
+
+.categoria-btn:focus-visible {
+  outline: none;
+}
+
+.categoria-btn:focus-visible::after {
+  outline: 3px solid var(--red-600);
+  outline-offset: 2px;
+}
+
+/* Mensagem que aparece quando há um filtro ativo */
+.categoria-status {
+  display: flex;
+  flex-wrap: wrap;
+  align-items: center;
+  gap: 0.5rem 1rem;
+  margin-top: 1rem;
+  padding: 0.75rem 1rem;
+  border-radius: var(--radius-sm);
+  background: var(--red-50);
+}
+
+.categoria-status:empty {
+  display: none;
+}
+
+.categoria-status a {
+  color: var(--red-700);
+  font-weight: 600;
+}
+
+.categoria-limpar {
+  width: auto;
+  margin: 0;
+  padding: 0;
+  border: 0;
+  background: none;
+  color: var(--red-700);
+  font: inherit;
+  font-weight: 600;
+  text-decoration: underline;
+  cursor: pointer;
+}
+
+.categoria-limpar:hover {
+  background: none;
+}
+
+/* 6. PRODUTOS (TABELA E IMAGEM) ------------------------- */
+table {
+  width: 100%;
+  max-width: 640px;
+  border-collapse: collapse;
+  margin-bottom: 1.5rem;
+}
+
+th,
+td {
+  padding: 0.75rem 1rem;
+  text-align: left;
+  border: 0;
+  border-bottom: 1px solid var(--line);
+}
+
+th {
+  background: var(--red-50);
+  color: var(--red-700);
+  font-family: var(--font-title);
+}
+
+td:last-child,
+th:last-child {
+  text-align: right;
+}
+
+td:last-child {
+  font-weight: 700;
+  color: var(--red-600);
+}
+
+/* Linha mostrada quando a categoria não tem produtos */
+tbody .sem-produtos td {
+  text-align: left;
+  font-family: var(--font-body);
+  font-weight: 400;
+  color: var(--muted);
+}
+
+#produtos img {
+  width: 100%;
+  max-width: 420px;
+  border-radius: var(--radius-lg);
+  border: 1px solid var(--line);
+}
+
+/* 7. FORMULÁRIO DE ORÇAMENTO ---------------------------- */
+form {
+  max-width: 560px;
+}
+
+fieldset {
+  padding: 1.25rem;
+  border: 1px solid var(--line);
+  border-radius: var(--radius-lg);
+}
+
+legend {
+  padding-inline: 0.5rem;
+  font-family: var(--font-title);
+  font-weight: 600;
+  color: var(--red-700);
+}
+
+fieldset > div + div,
+fieldset + fieldset {
+  margin-top: 1rem;
+}
+
+label {
+  display: block;
+  margin-bottom: 0.25rem;
+  font-weight: 600;
+}
+
+input,
+select,
+textarea {
+  width: 100%;
+  font: inherit;
+  color: var(--ink);
+  padding: 0.7rem 0.9rem;
+  border: 1px solid #c9c9d1;
+  border-radius: var(--radius-sm);
+  background: var(--white);
+}
+
+input:focus-visible,
+select:focus-visible,
+textarea:focus-visible {
+  outline-offset: 0;
+  border-color: var(--red-600);
+}
+
+/* só marca erro depois que a pessoa mexeu no campo */
+input:user-invalid,
+select:user-invalid,
+textarea:user-invalid {
+  border-color: var(--red-600);
+  background: var(--red-50);
+}
+
+/* Dica abaixo do telefone (criada pelo JavaScript) */
+.campo-dica {
+  display: block;
+  margin-top: 0.25rem;
+  font-size: 0.85rem;
+  color: var(--muted);
+}
+
+.campo-dica--erro {
+  color: var(--red-600);
+  font-weight: 600;
+}
+
+button {
+  font: inherit;
+  font-weight: 600;
+  margin-top: 1rem;
+  padding: 0.75rem 1.5rem;
+  border: 2px solid var(--red-600);
+  border-radius: var(--radius-sm);
+  background: var(--red-600);
+  color: var(--white);
+  cursor: pointer;
+  transition: background 0.15s;
+}
+
+button:hover {
+  background: var(--red-700);
+  border-color: var(--red-700);
+}
+
+/* mensagem de sucesso criada pelo JavaScript */
+.form-aviso {
+  margin-top: 1rem;
+  padding: 1rem;
+  border-left: 4px solid var(--red-600);
+  border-radius: var(--radius-sm);
+  background: var(--red-50);
+}
+
+.form-aviso:empty {
+  display: none;
+}
+
+/* 8. RESPONSIVO E ACESSIBILIDADE ------------------------ */
+@media (max-width: 640px) {
+  header {
+    padding-block: 2rem;
+  }
+
+  fieldset {
+    padding: 1rem;
+  }
+
+  button {
+    width: 100%;
+  }
+}
+
+@media (prefers-reduced-motion: reduce) {
+  * {
+    transition: none !important;
+  }
+}
