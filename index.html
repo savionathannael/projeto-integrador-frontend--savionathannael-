@@ -4,45 +4,48 @@
   <meta charset="UTF-8">
   <meta name="viewport" content="width=device-width, initial-scale=1.0">
   <title>Loja 3D Print</title>
+  <link href="https://fonts.googleapis.com/css2?family=DM+Sans:wght@400;500;600;700&family=Sora:wght@600;700&display=swap" rel="stylesheet">
+  <link rel="stylesheet" href="css/reset.css">
   <link rel="stylesheet" href="css/style.css">
 </head>
 <body>
 
-  <header>
+  <header id="topo">
     <h1>Loja 3D Print</h1>
     <p>Nosso objetivo é oferecer impressões 3D personalizadas de alta qualidade para clientes de todo o Brasil.</p>
   </header>
 
   <main>
     <section id="demonstracao">
-  <h2>Veja nossa impressora 3D em ação</h2>
+      <h2>Veja nossa impressora 3D em ação</h2>
 
-  <!--
-    preload="metadata": escolhido porque o vídeo fica no meio da página
-    (não é o primeiro conteúdo visível) e não queremos gastar dados do
-    usuário baixando o vídeo inteiro antes de ele decidir assistir.
-    Carregamos apenas duração/dimensões para já exibir o player corretamente.
-  -->
-  <video controls width="640" poster="assets/media/poster-impressao.jpg" preload="metadata">
-    <source src="assets/media/demonstracao-impressao.webm" type="video/webm">
-    <source src="assets/media/demonstracao-impressao.mp4" type="video/mp4">
-    <track src="assets/media/legendas-pt.vtt" kind="captions" srclang="pt" label="Português" default>
-    Seu navegador não suporta a reprodução deste vídeo.
-  </video>
-</section>
+      <!--
+        preload="metadata": escolhido porque o vídeo fica no meio da página
+        (não é o primeiro conteúdo visível) e não queremos gastar dados do
+        usuário baixando o vídeo inteiro antes de ele decidir assistir.
+        Carregamos apenas duração/dimensões para já exibir o player corretamente.
+      -->
+      <video controls width="640" poster="assets/media/poster-impressao.jpg" preload="metadata">
+        <source src="assets/media/demonstracao-impressao.webm" type="video/webm">
+        <source src="assets/media/demonstracao-impressao.mp4" type="video/mp4">
+        <track src="assets/media/legendas-pt.vtt" kind="captions" srclang="pt" label="Português" default>
+        Seu navegador não suporta a reprodução deste vídeo.
+      </video>
+    </section>
 
     <section id="categorias">
       <h2>Categorias de produtos</h2>
+      <p class="secao-dica">Clique em uma categoria para filtrar a tabela de produtos.</p>
       <ul>
-        <li>Miniaturas e action figures</li>
-        <li>Peças decorativas para casa</li>
-        <li>Suportes e organizadores personalizados</li>
+        <li class="card" data-categoria="miniaturas">Miniaturas e action figures</li>
+        <li class="card" data-categoria="decoracao">Peças decorativas para casa</li>
+        <li class="card" data-categoria="suportes">Suportes e organizadores personalizados</li>
       </ul>
     </section>
 
     <section id="produtos">
       <h2>Produtos em destaque</h2>
-      <table border="1">
+      <table>
         <thead>
           <tr>
             <th>Produto</th>
@@ -50,18 +53,22 @@
           </tr>
         </thead>
         <tbody>
-          <tr>
+          <tr data-categoria="miniaturas">
             <td>Miniatura de dragão (10cm)</td>
             <td>R$ 49,90</td>
           </tr>
-          <tr>
+          <tr data-categoria="suportes">
             <td>Suporte de celular articulado</td>
             <td>R$ 29,90</td>
+          </tr>
+          <tr data-categoria="decoracao">
+            <td>Vaso geométrico decorativo</td>
+            <td>R$ 39,90</td>
           </tr>
         </tbody>
       </table>
 
-      <img src="assets/images/miniatura-dragao.jpg" alt="Miniatura 3D de um dragão vermelho pousado sobre uma base de pedra">
+      <img class="destaque" src="assets/images/miniatura-dragao.jpg" alt="Miniatura 3D de um dragão vermelho pousado sobre uma base de pedra">
     </section>
 
     <section id="orcamento">
@@ -82,4 +89,38 @@
 
           <div>
             <label for="telefone">Telefone</label>
-            <input type="tel" id="telefone" name="telefone" pattern="[0-9]{10,11}" placeholder="Somente números, ex:
+            <input type="tel" id="telefone" name="telefone" pattern="[0-9]{10,11}" placeholder="Somente números, ex: 11999998888">
+          </div>
+        </fieldset>
+
+        <fieldset>
+          <legend>Dados do pedido</legend>
+
+          <div>
+            <label for="tipo-peca">Tipo de peça</label>
+            <select id="tipo-peca" name="tipo-peca" required>
+              <option value="">Selecione uma categoria</option>
+              <option value="miniaturas">Miniaturas e action figures</option>
+              <option value="decoracao">Peças decorativas para casa</option>
+              <option value="suportes">Suportes e organizadores personalizados</option>
+            </select>
+          </div>
+
+          <div>
+            <label for="descricao">Descreva o que você quer imprimir</label>
+            <textarea id="descricao" name="descricao" required></textarea>
+          </div>
+        </fieldset>
+
+        <button type="submit" class="botao">Pedir orçamento</button>
+      </form>
+    </section>
+  </main>
+
+  <footer>
+    <p>Loja 3D Print — Projeto Integrador Frontend.</p>
+  </footer>
+
+  <script src="js/main.js" defer></script>
+</body>
+</html>
