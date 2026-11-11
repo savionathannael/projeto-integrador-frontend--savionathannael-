@@ -1,0 +1,144 @@
+/* =========================================================
+   layout.css  (Aula 07: Flexbox, Grid e pseudo-classes)
+   Carrega DEPOIS do style.css e usa as variáveis dele.
+
+   Índice:
+   1. Barra de navegação (Flexbox)
+   2. Grade de produtos (CSS Grid)
+   3. Pseudo-classes estruturais
+   ========================================================= */
+
+/* 1. BARRA DE NAVEGAÇÃO (FLEXBOX) ------------------------ */
+/* display: flex transforma os filhos diretos (logo e menu) em itens de uma
+   linha. justify-content: space-between empurra o logo para a esquerda e o
+   menu para a direita. flex-wrap: wrap deixa o menu cair para a linha de
+   baixo em telas estreitas, sem precisar de media query. */
+.navbar {
+  display: flex;
+  flex-wrap: wrap;
+  align-items: center;
+  justify-content: space-between;
+  gap: var(--space-1) var(--space-3);
+  margin-bottom: var(--space-4);
+}
+
+.navbar-logo {
+  font-family: var(--font-title);
+  font-size: 1.25rem;
+  font-weight: 700;
+  text-decoration: none;
+}
+
+/* O menu também é um flex container: os <li> ficam lado a lado */
+.navbar-menu {
+  display: flex;
+  flex-wrap: wrap;
+  gap: 0.25rem;
+  list-style-type: none;
+}
+
+.navbar-menu a {
+  display: block;
+  padding: 0.5rem var(--space-2);
+  border-radius: var(--radius-sm);
+  text-decoration: none;
+  transition:
+    transform var(--transition),
+    background var(--transition);
+}
+
+/* O fundo do cabeçalho é vermelho, então os links ficam brancos
+   em todos os estados (ordem LoVe/HAte) */
+.navbar a:link,
+.navbar a:visited,
+.navbar a:hover,
+.navbar a:active {
+  color: var(--white);
+}
+
+/* Estados interativos: o mouse (:hover) e o teclado (:focus-visible)
+   recebem o mesmo destaque, para quem navega só com Tab. */
+.navbar-menu a:hover,
+.navbar-menu a:focus-visible {
+  background: rgba(255, 255, 255, 0.2);
+}
+
+.navbar a:focus-visible {
+  outline-color: var(--white);
+}
+
+/* POR QUE transform E NÃO margin/width/height:
+   transform é aplicado na etapa de composição do navegador (placa de vídeo)
+   e NÃO muda o espaço que o link ocupa. Já margin, width ou height obrigariam
+   o navegador a recalcular o layout (reflow) dos vizinhos a cada quadro da
+   animação, e o menu "tremeria". */
+.navbar-menu a:hover {
+  transform: translateY(-0.125rem);
+}
+
+.navbar-menu a:active {
+  transform: translateY(0);
+}
+
+/* 2. GRADE DE PRODUTOS (CSS GRID) ------------------------ */
+/* repeat(auto-fit, minmax(14rem, 1fr)):
+   - cada coluna tem no mínimo 14rem e divide o espaço que sobrar (1fr);
+   - o navegador calcula sozinho quantas colunas cabem: 3 ou 4 em tela larga,
+     2 em tablet, 1 no celular. Sem media query;
+   - auto-fit apaga as colunas vazias, então poucos cards esticam e ocupam
+     a linha toda (auto-fill deixaria colunas vazias).
+   min(100%, 14rem) evita barra de rolagem em telas menores que 14rem.
+   As COLUNAS são explícitas (criadas pelo repeat). As LINHAS são implícitas:
+   não declaramos grid-template-rows, então o Grid cria uma linha nova
+   (altura automática) cada vez que os cards não cabem na anterior. */
+.grade-produtos {
+  display: grid;
+  grid-template-columns: repeat(auto-fit, minmax(min(100%, 14rem), 1fr));
+  gap: var(--space-3);
+  list-style-type: none;
+}
+
+/* Cada card é flex em coluna: o preço (margin-top: auto) vai sempre para o
+   rodapé, e os cards da mesma linha ficam com a mesma altura. */
+.card-produto {
+  display: flex;
+  flex-direction: column;
+  align-items: flex-start;
+  gap: var(--space-1);
+  /* faixa colorida no topo (vermelho, ou a cor da faixa de preço) */
+  box-shadow: inset 0 0.3rem 0 var(--tone, var(--red-600));
+  transition: transform var(--transition);
+}
+
+/* Animação de hover só com transform (motivo explicado na seção 1) */
+.card-produto:hover {
+  transform: translateY(-0.25rem);
+}
+
+.card-produto-titulo {
+  font-size: 1.1rem;
+}
+
+.card-produto-descricao {
+  font-size: 0.95rem;
+  color: var(--muted);
+}
+
+.card-produto-preco {
+  margin-top: auto;
+  padding-top: var(--space-1);
+  font-weight: 700;
+  font-variant-numeric: tabular-nums;
+}
+
+/* 3. PSEUDO-CLASSES ESTRUTURAIS -------------------------- */
+/* :first-child, o primeiro card é o destaque principal da grade */
+.card-produto:first-child {
+  border-color: var(--red-600);
+}
+
+/* :nth-child(even), cards nas posições 2, 4, 6... ganham um fundo
+   levemente rosado. Ajuda o olho a separar um card do outro. */
+.card-produto:nth-child(even) {
+  background: var(--red-50);
+}
