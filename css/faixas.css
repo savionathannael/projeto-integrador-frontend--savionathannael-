@@ -1,0 +1,36 @@
+/* =========================================================
+   faixas.css  (Aula 11: resultado dos preços por faixa)
+   Carrega DEPOIS do layout.css. Usa as variáveis do style.css.
+   Os cartões já têm forma de .card e .card-produto: aqui só definimos
+   a cor de cada faixa. O JavaScript decide a classe; o CSS decide
+   a aparência.
+   ========================================================= */
+
+.faixa-barato {
+  --tone: var(--green-600);
+}
+
+.faixa-medio {
+  --tone: var(--amber-600);
+}
+
+.faixa-caro {
+  --tone: var(--red-600);
+}
+
+/* Selo da faixa: a cor vem de --tone */
+.etiqueta {
+  display: inline-block;
+  padding: 0.1rem 0.7rem;
+  border: 1px solid var(--tone, var(--muted));
+  border-radius: 999px;
+  background: color-mix(in srgb, var(--tone, var(--muted)) 12%, var(--white));
+  font-size: 0.85rem;
+  font-weight: 600;
+  color: var(--tone, var(--muted));
+}
+
+.resumo-produtos {
+  font-weight: 600;
+  color: var(--ink);
+}
