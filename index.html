@@ -7,10 +7,22 @@
   <link href="https://fonts.googleapis.com/css2?family=DM+Sans:wght@400;500;600;700&family=Sora:wght@600;700&display=swap" rel="stylesheet">
   <link rel="stylesheet" href="css/reset.css">
   <link rel="stylesheet" href="css/style.css">
+  <link rel="stylesheet" href="css/layout.css">
 </head>
 <body>
 
   <header id="topo">
+    <nav class="navbar" aria-label="Menu principal">
+      <a class="navbar-logo" href="#topo">Loja 3D Print</a>
+      <ul class="navbar-menu">
+        <li><a href="#demonstracao">Vídeo</a></li>
+        <li><a href="#categorias">Categorias</a></li>
+        <li><a href="#produtos">Produtos</a></li>
+        <li><a href="#destaques">Destaques</a></li>
+        <li><a href="#orcamento">Orçamento</a></li>
+      </ul>
+    </nav>
+
     <h1>Loja 3D Print</h1>
     <p>Nosso objetivo é oferecer impressões 3D personalizadas de alta qualidade para clientes de todo o Brasil.</p>
   </header>
@@ -69,6 +81,37 @@
       </table>
 
       <img class="destaque" src="assets/images/miniatura-dragao.jpg" alt="Miniatura 3D de um dragão vermelho pousado sobre uma base de pedra">
+    </section>
+
+    <section id="destaques">
+      <h2>Peças mais pedidas</h2>
+      <ul class="grade-produtos">
+
+        <li class="card card-produto">
+          <h3 class="card-produto-titulo">Miniatura de dragão (10cm)</h3>
+          <p class="card-produto-descricao">Miniatura detalhada para colecionadores e para decorar a estante.</p>
+          <p class="card-produto-preco">R$ 49,90</p>
+        </li>
+
+        <li class="card card-produto">
+          <h3 class="card-produto-titulo">Suporte de celular articulado</h3>
+          <p class="card-produto-descricao">Ajuste o ângulo para assistir vídeos ou fazer chamadas.</p>
+          <p class="card-produto-preco">R$ 29,90</p>
+        </li>
+
+        <li class="card card-produto">
+          <h3 class="card-produto-titulo">Vaso geométrico decorativo</h3>
+          <p class="card-produto-descricao">Peça com formas geométricas para sala ou escritório.</p>
+          <p class="card-produto-preco">R$ 39,90</p>
+        </li>
+
+        <li class="card card-produto">
+          <h3 class="card-produto-titulo">Luminária lithophane</h3>
+          <p class="card-produto-descricao">Luminária que revela uma imagem quando está acesa.</p>
+          <p class="card-produto-preco">R$ 119,90</p>
+        </li>
+
+      </ul>
     </section>
 
     <section id="orcamento">
