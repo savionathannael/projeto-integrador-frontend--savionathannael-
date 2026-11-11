@@ -1,0 +1,25 @@
+/* =========================================================
+   reset.css
+   Carrega ANTES do style.css (a ordem dos <link> importa).
+   ========================================================= */
+
+/* box-sizing: border-box em todos os elementos.
+   Assim width e height já incluem padding e border, e nenhum
+   elemento "estoura" a largura do pai quando ganha espaçamento.
+   Também zera margem e padding padrão do navegador (inclusive no body,
+   que vem com ~8px de margem). O style.css define de novo só o que precisa. */
+*,
+*::before,
+*::after {
+  box-sizing: border-box;
+  margin: 0;
+  padding: 0;
+}
+
+/* Imagens e vídeos nunca passam da largura da tela. */
+img,
+video {
+  display: block;
+  max-width: 100%;
+  height: auto;
+}

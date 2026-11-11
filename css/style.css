@@ -1,18 +1,26 @@
 /* =========================================================
-   LOJA 3D PRINT - style.css
+   LOJA 3D PRINT - style.css  (Aula 06: estilização base)
+   Carrega DEPOIS do reset.css.
+
    Índice:
    1. Variáveis
-   2. Reset e base
-   3. Cabeçalho, conteúdo e rodapé
-   4. Vídeo
-   5. Categorias (cards interativos)
-   6. Produtos (tabela e imagem)
-   7. Formulário de orçamento
-   8. Responsivo e acessibilidade
+   2. Base (tipografia e acessibilidade)
+   3. Links (ordem LoVe/HAte)
+   4. Cabeçalho, conteúdo e rodapé
+   5. Componentes reutilizáveis (.card, .botao, .destaque)
+   6. Vídeo
+   7. Categorias
+   8. Produtos (tabela)
+   9. Formulário de orçamento
+   10. Responsivo
+
+   Cuidados: sem style="" no HTML, ID só para elementos únicos
+   (#topo e as seções) e o resto com classes.
    ========================================================= */
 
 /* 1. VARIÁVEIS ------------------------------------------- */
 :root {
+  /* Cores */
   --red-600: #d4202c;
   --red-700: #b01822;
   --red-50: #fdecee;
@@ -20,48 +28,56 @@
   --muted: #63636d;
   --line: #e8e8ec;
   --white: #ffffff;
+  --green-600: #1a7a42;
+  --amber-600: #8a5a00;
+  --visited: #6b3fa0;
 
+  /* Fontes */
   --font-title: "Sora", "Segoe UI", sans-serif;
   --font-body: "DM Sans", "Segoe UI", sans-serif;
 
-  --radius-sm: 8px;
-  --radius-lg: 16px;
+  /* Espaçamento */
+  --space-1: 0.5rem;
+  --space-2: 1rem;
+  --space-3: 1.5rem;
+  --space-4: 3rem;
 
-  /* margem lateral que centraliza o conteúdo em até 960px */
-  --side: max(1rem, calc((100% - 960px) / 2));
+  /* Raio de borda */
+  --radius-sm: 0.5rem;
+  --radius-lg: 1rem;
+
+  /* Duração das animações (vira 0s para quem pede menos movimento) */
+  --transition: 0.15s;
+
+  /* Margem lateral que centraliza o conteúdo em até 60rem */
+  --side: max(1rem, calc((100% - 60rem) / 2));
 }
 
-/* 2. RESET E BASE ---------------------------------------- */
-*,
-*::before,
-*::after {
-  box-sizing: border-box;
-  margin: 0;
-  padding: 0;
-}
-
+/* 2. BASE ------------------------------------------------ */
+/* POR QUE REM E NÃO PX NO font-size:
+   rem é relativo ao tamanho de fonte que a pessoa configurou no navegador
+   (normalmente 16px). Quem aumenta a fonte por acessibilidade vê o site
+   inteiro crescer junto. Com px o tamanho fica fixo e ignora essa escolha. */
 body {
   font-family: var(--font-body);
+  font-size: 1.0625rem;
+  line-height: 1.6;
   color: var(--ink);
   background: var(--white);
-  line-height: 1.6;
 }
 
-h1, h2 {
+/* COMBINADOR DE AGRUPAMENTO (,): h1, h2 e h3 usam a mesma fonte de título,
+   então escrevo a regra uma vez só em vez de três. */
+h1,
+h2,
+h3 {
   font-family: var(--font-title);
   line-height: 1.2;
 }
 
-img,
-video {
-  display: block;
-  max-width: 100%;
-  height: auto;
-}
-
-/* garante que o atributo hidden sempre esconda o elemento */
+/* Garante que o atributo hidden sempre esconda o elemento */
 [hidden] {
-  display: none !important;
+  display: none;
 }
 
 :focus-visible {
@@ -69,25 +85,42 @@ video {
   outline-offset: 2px;
 }
 
-@media (prefers-reduced-motion: no-preference) {
-  html {
-    scroll-behavior: smooth;
-  }
+/* 3. LINKS (ORDEM LoVe/HAte) ----------------------------- */
+/* link, visited, hover, active. Se a ordem mudar, um estado "apaga" o outro,
+   porque todos têm a mesma especificidade e vence o que vem por último. */
+a:link {
+  color: var(--red-700);
 }
 
-/* 3. CABEÇALHO, CONTEÚDO E RODAPÉ ------------------------ */
-header {
+a:visited {
+  color: var(--visited);
+}
+
+a:hover {
+  color: var(--red-600);
+  text-decoration-thickness: 0.125rem;
+}
+
+a:active {
+  color: var(--ink);
+}
+
+/* 4. CABEÇALHO, CONTEÚDO E RODAPÉ ------------------------ */
+/* SELETOR DE ID: o cabeçalho principal só existe uma vez na página. */
+#topo {
+  padding: var(--space-3) var(--side) var(--space-4);
   background: var(--red-600);
   color: var(--white);
-  padding: 3rem var(--side);
 }
 
-header h1 {
+/* COMBINADOR FILHO DIRETO (>): só o h1 e o p que são filhos diretos do
+   cabeçalho. O texto de dentro da navbar não é afetado por estas regras. */
+#topo > h1 {
+  margin-bottom: var(--space-1);
   font-size: clamp(2rem, 5vw, 3.25rem);
-  margin-bottom: 0.5rem;
 }
 
-header p {
+#topo > p {
   max-width: 55ch;
 }
 
@@ -95,6 +128,8 @@ main {
   padding: 0 var(--side);
 }
 
+/* COMBINADOR DESCENDENTE (espaço): vale para toda section dentro do main,
+   em qualquer profundidade. Fora do main, nada muda. */
 main section {
   padding-block: 2.5rem;
   border-bottom: 1px solid var(--line);
@@ -105,53 +140,103 @@ main section:last-child {
 }
 
 main h2 {
+  margin-bottom: var(--space-3);
   font-size: 1.6rem;
-  margin-bottom: 1.25rem;
+}
+
+/* Frase de apoio abaixo do título de uma seção */
+.secao-dica {
+  margin-bottom: var(--space-2);
+  color: var(--muted);
 }
 
 footer {
+  padding: var(--space-3) var(--side);
   border-top: 1px solid var(--line);
-  padding: 1.5rem var(--side);
-  color: var(--muted);
   font-size: 0.9rem;
+  color: var(--muted);
 }
 
-/* 4. VÍDEO ---------------------------------------------- */
+/* 5. COMPONENTES REUTILIZÁVEIS --------------------------- */
+
+/* .card: BOX MODEL EXPLÍCITO
+   Conteúdo + padding (1.5rem) + border (1px) + margin (0).
+   Com box-sizing: border-box (reset.css), o card ocupa exatamente a largura
+   da coluna da grade: padding e border ficam DENTRO dela, sem estourar.
+   Confira no DevTools: Elements > clique no card > aba Computed (diagrama). */
+.card {
+  margin: 0;
+  padding: var(--space-3);
+  border: 1px solid var(--line);
+  border-radius: var(--radius-sm);
+  background: var(--white);
+}
+
+/* .botao: botão de ação principal */
+.botao {
+  margin-top: var(--space-2);
+  padding: 0.75rem var(--space-3);
+  border: 2px solid var(--red-600);
+  border-radius: var(--radius-sm);
+  background: var(--red-600);
+  font: inherit;
+  font-weight: 600;
+  color: var(--white);
+  cursor: pointer;
+  transition: background var(--transition);
+}
+
+.botao:hover {
+  border-color: var(--red-700);
+  background: var(--red-700);
+}
+
+/* .destaque: imagem em destaque. */
+.destaque {
+  width: 100%;
+  max-width: 26rem;
+  border: 1px solid var(--line);
+  border-radius: var(--radius-lg);
+}
+
+/* 6. VÍDEO ----------------------------------------------- */
 #demonstracao video {
   width: 100%;
-  max-width: 640px;
+  max-width: 40rem;
   border-radius: var(--radius-lg);
   background: var(--ink);
 }
 
-/* 5. CATEGORIAS (CARDS INTERATIVOS) --------------------- */
-#categorias ul {
+/* 7. CATEGORIAS ------------------------------------------ */
+/* COMBINADOR FILHO DIRETO (>): só a lista que é filha direta da seção.
+   list-style-type: none tira as bolinhas, porque cada item virou um card. */
+#categorias > ul {
   display: grid;
-  grid-template-columns: repeat(auto-fill, minmax(240px, 1fr));
-  gap: 1rem;
-  list-style: none;
+  grid-template-columns: repeat(auto-fill, minmax(15rem, 1fr));
+  gap: var(--space-2);
+  list-style-type: none;
 }
 
 #categorias li {
   position: relative;
-  padding: 1.25rem;
-  border: 1px solid var(--line);
-  border-left: 4px solid var(--red-600);
-  border-radius: var(--radius-sm);
+  border-left: 0.25rem solid var(--red-600);
   font-weight: 500;
-  transition: background 0.15s, color 0.15s, border-color 0.15s,
-    box-shadow 0.15s;
+  transition:
+    background var(--transition),
+    color var(--transition),
+    border-color var(--transition),
+    box-shadow var(--transition);
 }
 
 #categorias li:has(.categoria-btn):hover {
   border-color: var(--red-600);
-  box-shadow: 0 8px 20px rgba(212, 32, 44, 0.14);
+  box-shadow: 0 0.5rem 1.25rem rgba(212, 32, 44, 0.14);
 }
 
 /* Categoria selecionada: card todo vermelho */
 #categorias li:has(.categoria-btn[aria-pressed="true"]) {
-  background: var(--red-600);
   border-color: var(--red-700);
+  background: var(--red-600);
   color: var(--white);
 }
 
@@ -168,10 +253,6 @@ footer {
   font: inherit;
   text-align: left;
   cursor: pointer;
-}
-
-.categoria-btn:hover {
-  background: none;
 }
 
 .categoria-btn::after {
@@ -195,9 +276,9 @@ footer {
   display: flex;
   flex-wrap: wrap;
   align-items: center;
-  gap: 0.5rem 1rem;
-  margin-top: 1rem;
-  padding: 0.75rem 1rem;
+  gap: 0.5rem var(--space-2);
+  margin-top: var(--space-2);
+  padding: 0.75rem var(--space-2);
   border-radius: var(--radius-sm);
   background: var(--red-50);
 }
@@ -207,12 +288,10 @@ footer {
 }
 
 .categoria-status a {
-  color: var(--red-700);
   font-weight: 600;
 }
 
 .categoria-limpar {
-  width: auto;
   margin: 0;
   padding: 0;
   border: 0;
@@ -224,24 +303,21 @@ footer {
   cursor: pointer;
 }
 
-.categoria-limpar:hover {
-  background: none;
-}
-
-/* 6. PRODUTOS (TABELA E IMAGEM) ------------------------- */
+/* 8. PRODUTOS (TABELA) ----------------------------------- */
+/* border-collapse: collapse junta as bordas das células em uma só linha.
+   Sem isso, cada célula teria a sua borda separada. */
 table {
   width: 100%;
-  max-width: 640px;
+  max-width: 40rem;
+  margin-bottom: var(--space-3);
   border-collapse: collapse;
-  margin-bottom: 1.5rem;
 }
 
 th,
 td {
-  padding: 0.75rem 1rem;
-  text-align: left;
-  border: 0;
+  padding: 0.75rem var(--space-2);
   border-bottom: 1px solid var(--line);
+  text-align: left;
 }
 
 th {
@@ -250,8 +326,8 @@ th {
   font-family: var(--font-title);
 }
 
-td:last-child,
-th:last-child {
+th:last-child,
+td:last-child {
   text-align: right;
 }
 
@@ -268,34 +344,29 @@ tbody .sem-produtos td {
   color: var(--muted);
 }
 
-#produtos img {
-  width: 100%;
-  max-width: 420px;
-  border-radius: var(--radius-lg);
-  border: 1px solid var(--line);
-}
-
-/* 7. FORMULÁRIO DE ORÇAMENTO ---------------------------- */
+/* 9. FORMULÁRIO DE ORÇAMENTO ----------------------------- */
 form {
-  max-width: 560px;
+  max-width: 35rem;
 }
 
 fieldset {
-  padding: 1.25rem;
+  padding: var(--space-3);
   border: 1px solid var(--line);
   border-radius: var(--radius-lg);
 }
 
 legend {
-  padding-inline: 0.5rem;
+  padding-inline: var(--space-1);
   font-family: var(--font-title);
   font-weight: 600;
   color: var(--red-700);
 }
 
+/* COMBINADORES DE IRMÃO ADJACENTE (+): a margem só vai para o campo que vem
+   logo depois de outro. O primeiro campo não precisa de espaço em cima. */
 fieldset > div + div,
 fieldset + fieldset {
-  margin-top: 1rem;
+  margin-top: var(--space-2);
 }
 
 label {
@@ -308,12 +379,17 @@ input,
 select,
 textarea {
   width: 100%;
-  font: inherit;
-  color: var(--ink);
   padding: 0.7rem 0.9rem;
   border: 1px solid #c9c9d1;
   border-radius: var(--radius-sm);
   background: var(--white);
+  font: inherit;
+  color: var(--ink);
+}
+
+textarea {
+  min-height: 7rem;
+  resize: vertical;
 }
 
 input:focus-visible,
@@ -323,7 +399,7 @@ textarea:focus-visible {
   border-color: var(--red-600);
 }
 
-/* só marca erro depois que a pessoa mexeu no campo */
+/* Só marca erro depois que a pessoa mexeu no campo */
 input:user-invalid,
 select:user-invalid,
 textarea:user-invalid {
@@ -344,29 +420,11 @@ textarea:user-invalid {
   font-weight: 600;
 }
 
-button {
-  font: inherit;
-  font-weight: 600;
-  margin-top: 1rem;
-  padding: 0.75rem 1.5rem;
-  border: 2px solid var(--red-600);
-  border-radius: var(--radius-sm);
-  background: var(--red-600);
-  color: var(--white);
-  cursor: pointer;
-  transition: background 0.15s;
-}
-
-button:hover {
-  background: var(--red-700);
-  border-color: var(--red-700);
-}
-
-/* mensagem de sucesso criada pelo JavaScript */
+/* Mensagem de sucesso criada pelo JavaScript */
 .form-aviso {
-  margin-top: 1rem;
-  padding: 1rem;
-  border-left: 4px solid var(--red-600);
+  margin-top: var(--space-2);
+  padding: var(--space-2);
+  border-left: 0.25rem solid var(--red-600);
   border-radius: var(--radius-sm);
   background: var(--red-50);
 }
@@ -375,23 +433,30 @@ button:hover {
   display: none;
 }
 
-/* 8. RESPONSIVO E ACESSIBILIDADE ------------------------ */
-@media (max-width: 640px) {
-  header {
-    padding-block: 2rem;
+/* 10. RESPONSIVO E MOVIMENTO REDUZIDO -------------------- */
+@media (max-width: 40rem) {
+  #topo {
+    padding-bottom: 2rem;
   }
 
   fieldset {
-    padding: 1rem;
+    padding: var(--space-2);
   }
 
-  button {
+  .botao {
     width: 100%;
   }
 }
 
+@media (prefers-reduced-motion: no-preference) {
+  html {
+    scroll-behavior: smooth;
+  }
+}
+
+/* Basta zerar a variável que todas as transições usam */
 @media (prefers-reduced-motion: reduce) {
-  * {
-    transition: none !important;
+  :root {
+    --transition: 0s;
   }
 }
